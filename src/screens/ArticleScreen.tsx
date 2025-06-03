@@ -13,9 +13,7 @@ export default function ArticleScreen() {
   const { articles } = useNewsStore();
 
   const article = articles.find((a) => a.id === articleId);
-  console.log({article, params})
 
-  
 
   if (!article) {
     return (
