@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, {useEffect, useCallback, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -8,25 +8,22 @@ import {
   ActivityIndicator,
   StyleSheet,
   RefreshControl,
-  Button,
-  Platform,
-  PermissionsAndroid,
-  Alert,
-  Linking,
 } from 'react-native';
-import { useNewsStore } from '../store/newsStore';
-import { fetchNews } from '../api/news';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParams } from '../navigation/RootStackParams';
-import { checkIsConnected } from '../utils/network';
+import {useNewsStore} from '../store/newsStore';
+import {fetchNews} from '../api/news';
+import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParams} from '../navigation/RootStackParams';
+import {checkIsConnected} from '../utils/network';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
-import { FilterBar } from '../components/FilterBar';
+import {FilterBar} from '../components/FilterBar';
 import PushNotification from 'react-native-push-notification';
 
-
-type NewsFeedNavigationProp = NativeStackNavigationProp<RootStackParams, 'NewsFeed'>;
+type NewsFeedNavigationProp = NativeStackNavigationProp<
+  RootStackParams,
+  'NewsFeed'
+>;
 
 interface Article {
   id: string;
@@ -39,64 +36,41 @@ interface Article {
   };
   thumbnail?: string;
   source?: string;
-  categories?: string[];  
+  categories?: string[];
   slug?: string;
 }
 
 export default function NewsFeed() {
   const navigation = useNavigation<NewsFeedNavigationProp>();
-  const { articles, loading, error, setArticles, setLoading, setError, filters } = useNewsStore();
+  const {articles, loading, error, setArticles, setLoading, setError, filters} =
+    useNewsStore();
   const [isOffline, setIsOffline] = useState(false);
+  const lastFetchedArticleId = useRef<string | null>(null);
 
-
-  const triggerNotification = async() => {
- if (Platform.OS === 'android' && Platform.Version >= 33) {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-    );
-
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Notification permission granted');
-    } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      Alert.alert(
-        'Permission Denied',
-        'Please enable notification permissions from settings.',
-        [
-          {
-            text: 'Open Settings',
-            onPress: () => Linking.openSettings(),
-          },
-          { text: 'Cancel', style: 'cancel' },
-        ]
-      );
-    } else {
-      console.log('Notification permission denied');
-    }
-  }
-    console.log('triggering push notification');
-    PushNotification.getChannels(function (channel_ids) {
-    console.log(channel_ids); // ['channel_id_1']
-    });
+  const triggerNotificationForNewArticle = (article: Article) => {
     PushNotification.localNotification({
-        channelId:'default-channel-id',
-        title:'My Notification Title',
-        message:'checking local notification',
+      channelId: 'default-channel-id',
+      title: 'New Article',
+      message: article.title,
     });
   };
-
-
 
   const loadNews = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    // const connected = await checkIsConnected();
-    const connected = false;
+    const connected = await checkIsConnected();
     setIsOffline(!connected);
 
     if (connected) {
       try {
         const news = await fetchNews();
+        if (news.length > 0) {
+          if (lastFetchedArticleId.current && news[0].id !== lastFetchedArticleId.current) {
+            triggerNotificationForNewArticle(news[0]);
+          }
+          lastFetchedArticleId.current = news[0].id;
+        }
         setArticles(news);
         await AsyncStorage.setItem('cached_articles', JSON.stringify(news));
       } catch (e) {
@@ -106,7 +80,11 @@ export default function NewsFeed() {
       try {
         const cached = await AsyncStorage.getItem('cached_articles');
         if (cached) {
-          setArticles(JSON.parse(cached));
+          const parsed = JSON.parse(cached);
+          if (parsed.length > 0) {
+            lastFetchedArticleId.current = parsed[0].id;
+          }
+          setArticles(parsed);
           setError('You are offline. Showing cached news.');
         } else {
           setError('You are offline and no cached news is available.');
@@ -124,14 +102,14 @@ export default function NewsFeed() {
   }, [loadNews, filters]);
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
+    const unsubscribe = NetInfo.addEventListener(state => {
       setIsOffline(!state.isConnected);
     });
 
     return () => unsubscribe();
   }, []);
 
-  const renderItem = ({ item }: { item: Article }) => (
+  const renderItem = ({item}: {item: Article}) => (
     <TouchableOpacity
       style={styles.card}
       onPress={() =>
@@ -139,10 +117,9 @@ export default function NewsFeed() {
           articleId: item.id,
           articleUrl: `https://cryptopanic.com/news/${item.id}/${item.slug}`,
         })
-      }
-    >
+      }>
       {item.thumbnail ? (
-        <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
+        <Image source={{uri: item.thumbnail}} style={styles.thumbnail} />
       ) : (
         <View style={styles.thumbnailPlaceholder}>
           <Text style={styles.placeholderText}>No Image</Text>
@@ -152,7 +129,9 @@ export default function NewsFeed() {
         <Text style={styles.title} numberOfLines={3}>
           {item.title}
         </Text>
-        <Text style={styles.date}>{new Date(item.published_at).toLocaleString()}</Text>
+        <Text style={styles.date}>
+          {new Date(item.published_at).toLocaleString()}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -160,10 +139,11 @@ export default function NewsFeed() {
   return (
     <View style={styles.container}>
       <FilterBar />
-             <Button title="Trigger Notification" onPress={triggerNotification} />
       {isOffline && (
         <View style={styles.offlineBanner}>
-          <Text style={styles.offlineText}>You are offline - showing cached content</Text>
+          <Text style={styles.offlineText}>
+            You are offline - showing cached content
+          </Text>
         </View>
       )}
 
@@ -178,11 +158,17 @@ export default function NewsFeed() {
       {!loading && !error && (
         <FlatList
           data={articles}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           renderItem={renderItem}
-          refreshControl={<RefreshControl refreshing={loading} onRefresh={loadNews} />}
-          contentContainerStyle={articles.length === 0 ? styles.emptyContainer : styles.listContainer}
-          ListEmptyComponent={<Text style={styles.emptyText}>No news available.</Text>}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={loadNews} />
+          }
+          contentContainerStyle={
+            articles.length === 0 ? styles.emptyContainer : styles.listContainer
+          }
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>No news available.</Text>
+          }
         />
       )}
     </View>
@@ -222,7 +208,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     shadowColor: '#000000',
     shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowRadius: 4,
   },
   thumbnail: {
