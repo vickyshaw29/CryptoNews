@@ -9,6 +9,10 @@ import {
   StyleSheet,
   RefreshControl,
   Button,
+  Platform,
+  PermissionsAndroid,
+  Alert,
+  Linking,
 } from 'react-native';
 import { useNewsStore } from '../store/newsStore';
 import { fetchNews } from '../api/news';
@@ -45,13 +49,39 @@ export default function NewsFeed() {
   const [isOffline, setIsOffline] = useState(false);
 
 
-  const triggerNotification = () => {
+  const triggerNotification = async() => {
+ if (Platform.OS === 'android' && Platform.Version >= 33) {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+    );
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Notification permission granted');
+    } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      Alert.alert(
+        'Permission Denied',
+        'Please enable notification permissions from settings.',
+        [
+          {
+            text: 'Open Settings',
+            onPress: () => Linking.openSettings(),
+          },
+          { text: 'Cancel', style: 'cancel' },
+        ]
+      );
+    } else {
+      console.log('Notification permission denied');
+    }
+  }
     console.log('triggering push notification');
+    PushNotification.getChannels(function (channel_ids) {
+    console.log(channel_ids); // ['channel_id_1']
+    });
     PushNotification.localNotification({
-        channelId:'your-channel-id',
+        channelId:'default-channel-id',
         title:'My Notification Title',
         message:'checking local notification',
-    })
+    });
   };
 
 
