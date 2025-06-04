@@ -3,14 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { FilterDropdown } from './FilterDropdown';
 import { useNewsStore } from '../store/newsStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useThemeStore } from '../theme/themeStore';
 
 const COINS = ['btc', 'eth', 'sol', 'xrp', 'doge'];
 const CATEGORIES = ['market', 'regulation', 'tech', 'trading'];
 
 export const FilterBar = () => {
   const { filters, setFilters } = useNewsStore();
-  const {theme} = useThemeStore();
 
   const updateFilter = async (key: 'coin' | 'category', value: string) => {
     const updated = { ...filters, [key]: value };
@@ -29,7 +27,7 @@ export const FilterBar = () => {
   }, [setFilters]);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.container]}>
       <FilterDropdown
         label="Coin"
         options={['', ...COINS]}
