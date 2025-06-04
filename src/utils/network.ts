@@ -1,4 +1,3 @@
-// utils/network.ts
 import NetInfo from '@react-native-community/netinfo';
 
 export const checkIsConnected = async (): Promise<boolean> => {

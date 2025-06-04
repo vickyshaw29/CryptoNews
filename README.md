@@ -112,6 +112,7 @@ This is one way to run your app — you can also build it directly from Android 
 ```bash
 CryptoNewsApp/
 ├── api/               # API client setup and functions
+├── assets/            # assets
 ├── components/        # Reusable UI components
 ├── navigation/        # Navigation and deep linking setup
 ├── screens/           # Screen-level components (NewsFeed, Article)
