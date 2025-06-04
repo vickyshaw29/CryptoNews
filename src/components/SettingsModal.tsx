@@ -18,7 +18,7 @@ export default function SettingsModal({ visible, onClose, isDarkTheme, toggleThe
           <Text style={[styles.modalTitle, {color:theme.colors.text}]}>Toggle Theme</Text>
           <View style={styles.switchRow}>
             <Text style={[styles.switchLabel, {color:theme.colors.text}]}>Dark Theme</Text>
-            <Switch value={isDarkTheme} onValueChange={toggleTheme} />
+            <Switch testID="theme-switch" value={isDarkTheme} onValueChange={toggleTheme} />
           </View>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Close</Text>
