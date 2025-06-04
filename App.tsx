@@ -1,17 +1,21 @@
-import React from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+// App.tsx
+import React, {useEffect} from 'react';
+import {StatusBar} from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
-
-
+import { useThemeStore } from './src/theme/themeStore';
 
 export default function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const {theme, themeName, initTheme} = useThemeStore();
+
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
 
   return (
     <>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? '#000' : '#fff'}
+        barStyle={themeName === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.colors.background}
       />
       <AppNavigator />
     </>

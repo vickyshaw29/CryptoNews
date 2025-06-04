@@ -16,6 +16,6 @@ module.exports = {
     '<rootDir>/jestSetupFile.js',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-push-notification|@react-native-community/push-notification-ios)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-push-notification|@react-native-community/push-notification-ios|lodash-es)/)',
   ],
 };

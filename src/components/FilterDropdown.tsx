@@ -10,6 +10,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import { useThemeStore } from '../theme/themeStore';
 
 interface FilterDropdownProps {
   label: string;
@@ -24,6 +25,7 @@ export const FilterDropdown = ({
   selected,
   onSelect,
 }: FilterDropdownProps) => {
+  const theme = useThemeStore(state => state.theme);
   const [visible, setVisible] = useState(false);
   const scaleAnim = useRef(new Animated.Value(0.95)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -62,8 +64,8 @@ export const FilterDropdown = ({
 
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity style={styles.button} onPress={showModal}>
-        <Text style={styles.label}>{label}</Text>
+      <TouchableOpacity style={[styles.button, {backgroundColor:theme.colors.background}]} onPress={showModal}>
+        <Text style={[styles.label, {color:theme.colors.text}]}>{label}</Text>
         <Text style={styles.value}>{selected ? selected.toUpperCase() : 'All'}</Text>
       </TouchableOpacity>
 
@@ -72,6 +74,7 @@ export const FilterDropdown = ({
           <Animated.View
             style={[
               styles.modalCard,
+              {backgroundColor:theme.colors.background},
               {
                 transform: [{ scale: scaleAnim }],
                 opacity: opacityAnim,
@@ -97,6 +100,7 @@ export const FilterDropdown = ({
                       style={[
                         styles.optionText,
                         isSelected && styles.optionTextSelected,
+                        {color:theme.colors.text},
                       ]}
                     >
                       {item.toUpperCase()}
