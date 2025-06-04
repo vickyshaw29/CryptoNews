@@ -66,7 +66,7 @@ export const FilterDropdown = ({
     <View style={styles.wrapper}>
       <TouchableOpacity style={[styles.button, {backgroundColor:theme.colors.background}]} onPress={showModal}>
         <Text style={[styles.label, {color:theme.colors.text}]}>{label}</Text>
-        <Text style={styles.value}>{selected ? selected.toUpperCase() : 'All'}</Text>
+        <Text style={[styles.value, {color:theme.colors.text}]}>{selected ? selected.toUpperCase() : 'All'}</Text>
       </TouchableOpacity>
 
       <Modal visible={visible} transparent animationType="none">
