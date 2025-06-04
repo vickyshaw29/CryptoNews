@@ -3,12 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { FilterDropdown } from './FilterDropdown';
 import { useNewsStore } from '../store/newsStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useThemeStore } from '../theme/themeStore';
 
 const COINS = ['btc', 'eth', 'sol', 'xrp', 'doge'];
 const CATEGORIES = ['market', 'regulation', 'tech', 'trading'];
 
 export const FilterBar = () => {
   const { filters, setFilters } = useNewsStore();
+  const theme = useThemeStore(state => state.theme);
 
   const updateFilter = async (key: 'coin' | 'category', value: string) => {
     const updated = { ...filters, [key]: value };
@@ -19,13 +21,15 @@ export const FilterBar = () => {
   useEffect(() => {
     const loadFilters = async () => {
       const saved = await AsyncStorage.getItem('filters');
-      if (saved) {setFilters(JSON.parse(saved));}
+      if (saved) {
+        setFilters(JSON.parse(saved));
+      }
     };
     loadFilters();
   }, [setFilters]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FilterDropdown
         label="Coin"
         options={['', ...COINS]}
@@ -46,7 +50,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 12,
     flexDirection: 'row',
-    backgroundColor: '#fff',
     justifyContent: 'space-between',
   },
 });

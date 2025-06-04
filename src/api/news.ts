@@ -1,14 +1,17 @@
 import apiClient from './axios';
 import { useNewsStore } from '../store/newsStore';
+import { CRYPTO_PANIC_API_KEY } from '@env';
+
 
 export const fetchNews = async () => {
   const { filters } = useNewsStore.getState();
   const { coin, category } = filters;
 
+
   try {
     const response = await apiClient.get('/posts/', {
       params: {
-        auth_token: '37d9c4a4eb28087a17a8a9fceba3249e57f616c2',
+        auth_token: CRYPTO_PANIC_API_KEY,
         public: true,
         ...(coin ? { currencies: coin } : {}),
         ...(category ? { filter: category } : {}),
