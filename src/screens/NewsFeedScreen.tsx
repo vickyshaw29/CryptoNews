@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import {useNewsStore} from '../store/newsStore';
 import {fetchNews} from '../api/news';
@@ -18,6 +19,7 @@ import {FilterBar} from '../components/FilterBar';
 import PushNotification from 'react-native-push-notification';
 import { useThemeStore } from '../theme/themeStore';
 import { getStyles } from './NewsFeedScreen.styles';
+import { checkIsConnected } from '../utils/network';
 
 type NewsFeedNavigationProp = NativeStackNavigationProp<
   RootStackParams,
@@ -64,8 +66,7 @@ export default function NewsFeed() {
     setLoading(true);
     setError(null);
 
-    // const connected = await checkIsConnected();
-    const connected = false;
+    const connected = await checkIsConnected();
     setIsOffline(!connected);
 
     if (connected) {
@@ -105,8 +106,37 @@ export default function NewsFeed() {
 
   useEffect(() => {
     loadNews();
-  }, [loadNews, filters]);
 
+    const isSimulator = __DEV__ && (Platform.OS === 'ios' || Platform.OS === 'android');
+    if (isSimulator) {
+      console.log('🧪 Simulator detected - starting background polling...');
+      const interval = setInterval(async () => {
+        console.log('🔄 Polling for new articles...');
+        try {
+          const news = await fetchNews();
+          if (
+            news.length > 0 &&
+            news[0].id !== lastFetchedArticleId.current
+          ) {
+            console.log('🆕 New article detected:', news[0].title);
+            triggerNotificationForNewArticle(news[0]);
+            lastFetchedArticleId.current = news[0].id;
+            setArticles(news);
+            await AsyncStorage.setItem('cached_articles', JSON.stringify(news));
+          } else {
+            console.log('ℹ️ No new articles found.');
+          }
+        } catch (e) {
+          console.log('⚠️ Background fetch failed:', e);
+        }
+      }, 30000); // every 30 seconds
+
+      return () => {
+        console.log('🛑 Clearing polling interval.');
+        clearInterval(interval);
+      };
+    }
+  }, [loadNews, filters, setArticles]);
 
   const renderItem = ({item}: {item: Article}) => (
     <TouchableOpacity
