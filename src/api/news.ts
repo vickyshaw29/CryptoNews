@@ -7,6 +7,7 @@ export const fetchNews = async () => {
   const { filters } = useNewsStore.getState();
   const { coin, category } = filters;
 
+  console.log({CRYPTO_PANIC_API_KEY})
 
   try {
     const response = await apiClient.get('/posts/', {

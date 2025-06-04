@@ -10,7 +10,7 @@ const CATEGORIES = ['market', 'regulation', 'tech', 'trading'];
 
 export const FilterBar = () => {
   const { filters, setFilters } = useNewsStore();
-  const theme = useThemeStore(state => state.theme);
+  const {theme} = useThemeStore();
 
   const updateFilter = async (key: 'coin' | 'category', value: string) => {
     const updated = { ...filters, [key]: value };

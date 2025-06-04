@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import NewsFeedScreen from '../screens/NewsFeedScreen';
 import ArticleScreen from '../screens/ArticleScreen';
 import SettingsModal from '../components/SettingsModal';
@@ -33,23 +33,17 @@ export default function AppNavigator() {
   }, [initTheme]);
 
   const headerRight = () => (
-    <TouchableOpacity
-      style={{ marginRight: 15, paddingHorizontal: 10, paddingVertical: 5 }}
-      onPress={() => setModalVisible(true)}
-    >
-      <Text style={{ color: themeName === 'dark' ? 'white' : 'black', fontSize: 16 }}>Settings</Text>
+    <TouchableOpacity style={styles.headerButton} onPress={() => setModalVisible(true)}>
+      <Text style={[styles.headerButtonText, themeName === 'dark' ? styles.darkText : styles.lightText]}>
+        Settings
+      </Text>
     </TouchableOpacity>
   );
 
   return (
     <>
       <NavigationContainer linking={linking} theme={themeName === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack.Navigator
-          initialRouteName="NewsFeed"
-          screenOptions={{
-            headerRight,
-          }}
-        >
+        <Stack.Navigator initialRouteName="NewsFeed" screenOptions={{ headerRight }}>
           <Stack.Screen name="NewsFeed" component={NewsFeedScreen} options={{ title: 'Crypto News' }} />
           <Stack.Screen name="Article" component={ArticleScreen} options={{ title: 'Article' }} />
         </Stack.Navigator>
@@ -63,3 +57,20 @@ export default function AppNavigator() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  headerButton: {
+    marginRight: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  headerButtonText: {
+    fontSize: 16,
+  },
+  darkText: {
+    color: 'white',
+  },
+  lightText: {
+    color: 'black',
+  },
+});
