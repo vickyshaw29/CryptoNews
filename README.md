@@ -1,16 +1,45 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# CryptoNewsApp
 
-# Getting Started
+🔗 **Live Demo:** [https://structura-two.vercel.app](https://structura-two.vercel.app)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+**CryptoNewsApp** This is a React Native project for fetching and displaying crypto-related news, bootstrapped using @react-native-community/cli.
+A cross-platform (iOS & Android) mobile application that demonstrates capabilities in API integration, state management, offline caching, native module integration, and modern UI/UX patterns.
 
-## Step 1: Start Metro
+## 🚀 Getting Started
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+ **Note**: Make sure you have completed the Set Up Your Environment guide before proceeding.
 
+
+## 📋 Prerequisites
+- Node.js >= 16.x
+- React Native CLI environment
+- Xcode and Android Studio setup
+- CryptoPanic API key
+
+Create a .env file in the root directory with your API key:
+
+```bash 
+CRYPTO_PANIC_API_KEY=your_api_key_here
+```
+
+## 1️⃣ Step 1: Install Dependencies
+```bash
+# Using npm
+npm install
+
+# OR using Yarn
+yarn install
+```
+For iOS, install CocoaPods dependencies:
+
+```bash
+npx pod-install ios
+```
+
+## 2️⃣ Step 2: Start Metro
+You will need to run Metro, the JavaScript build tool for React Native.
 To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
+```bash
 # Using npm
 npm start
 
@@ -18,39 +47,22 @@ npm start
 yarn start
 ```
 
-## Step 2: Build and run your app
+## 3️⃣ Step 3: Build and run your app
 
 With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
 
-### Android
-
-```sh
-# Using npm
+```bash
+🤖 Android
+sh# Using npm
 npm run android
 
 # OR using Yarn
+
 yarn android
-```
 
-### iOS
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+🍎 iOS
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
 # Using npm
 npm run ios
 
@@ -58,40 +70,55 @@ npm run ios
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
+If everything is set up correctly, you should see the CryptoNewsApp running in the Android Emulator, iOS Simulator, or your connected device.
 This is one way to run your app — you can also build it directly from Android Studio or Xcode.
 
-## Step 3: Modify your app
+## 🚀 Features
+1  📰 News Feed UI
 
-Now that you have successfully run the app, let's make changes!
+- Fetches and displays crypto news from CryptoPanic API in a scrollable list
+- Opens articles in WebView with headlines, thumbnails, and timestamps
+2 📱 Offline & Cache Support
+- Caches news using AsyncStorage for offline viewing
+- Shows offline banner when network is unavailable
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+3 🔗 Deep Linking
+- Navigate directly to specific articles via URL
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+4 .🧠 State Management
+- Uses Zustand for global state management of articles, filters, and loading states
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+5 🔔 Local Notifications
+- Shows notifications for newly fetched articles when app is backgrounded
 
-## Congratulations! :tada:
+6 🧪 Unit Testing
+- Comprehensive test coverage using Jest and React Native Testing Library
 
-You've successfully run and modified your React Native App. :partying_face:
+🎁 Bonus Features
+- ✅ Pull to Refresh for updating the article list
+- ✅ Dark Mode support using system appearance and toggle
+- ✅ Pagination: Load more articles on scroll(added an alternate code is there but it wont work since api plan needs to be upgraded)
 
-### Now what?
+## 🧱 Architecture Overview
+⚙️ Tech Stack
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+- React Native
+- Zustand for state management
+- React Navigation for routing and deep linking
+- AsyncStorage for persistence
+- Axios for API calls
+- React Native Push Notifications for for local notifications
+- WebView for rendering articles
 
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```bash
+CryptoNewsApp/
+├── api/               # API client setup and functions
+├── components/        # Reusable UI components
+├── navigation/        # Navigation and deep linking setup
+├── screens/           # Screen-level components (NewsFeed, Article)
+├── store/             # Zustand stores for state management
+├── theme/             # Dark/light theme toggle logic
+├── utils/             # Utility functions (network check, etc.)
+├── App.tsx
+├── ...
+```
