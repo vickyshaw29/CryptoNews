@@ -1,5 +1,9 @@
 # CryptoNewsApp
 
+![Simulator Screenshot - iPhone 15 Pro Max - 2025-06-04 at 21 02 58](https://github.com/user-attachments/assets/0a9b3d5b-1019-4274-a15f-39bfe92174e5)
+![Screenshot_1749051203](https://github.com/user-attachments/assets/fe8415c5-228f-463b-a2b2-37f1128ef8fc)
+
+
 
 **CryptoNewsApp** This is a React Native project for fetching and displaying crypto-related news, bootstrapped using @react-native-community/cli.
 A cross-platform (iOS & Android) mobile application that demonstrates capabilities in API integration, state management, offline caching, native module integration, and modern UI/UX patterns.
@@ -96,7 +100,7 @@ This is one way to run your app — you can also build it directly from Android 
 🎁 Bonus Features
 - ✅ Pull to Refresh for updating the article list
 - ✅ Dark Mode support using system appearance and toggle
-- ✅ Pagination: Load more articles on scroll(added an alternate code is there but it wont work since api plan needs to be upgraded)
+- ✅ Pagination: Load more articles on scroll(added an alternate component but it wont work since api plan needs to be upgraded)
 
 ## 🧱 Architecture Overview
 ⚙️ Tech Stack
