@@ -18,4 +18,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-push-notification|@react-native-community/push-notification-ios|lodash-es)/)',
   ],
+  moduleNameMapper: {
+    '^@env$': '<rootDir>/__mocks__/envMock.js',
+  },
 };

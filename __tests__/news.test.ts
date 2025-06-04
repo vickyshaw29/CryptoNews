@@ -29,7 +29,7 @@ describe('fetchNews', () => {
 
     expect(apiClient.get).toHaveBeenCalledWith('/posts/', {
       params: {
-        auth_token: '37d9c4a4eb28087a17a8a9fceba3249e57f616c2',
+        auth_token: 'test-api-key',
         public: true,
         currencies: 'BTC',
         filter: 'trending',
@@ -52,7 +52,7 @@ describe('fetchNews', () => {
 
     expect(apiClient.get).toHaveBeenCalledWith('/posts/', {
       params: {
-        auth_token: '37d9c4a4eb28087a17a8a9fceba3249e57f616c2',
+        auth_token: 'test-api-key',
         public: true,
       },
     });
@@ -60,12 +60,12 @@ describe('fetchNews', () => {
     expect(result).toEqual(mockData);
   });
 
-    it('should throw and log error on failure', async () => {
+  it('should throw and log error on failure', async () => {
     const error = new Error('API error');
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     (useNewsStore.getState as jest.Mock).mockReturnValue({
-        filters: { coin: '', category: '' },
+      filters: { coin: '', category: '' },
     });
 
     (apiClient.get as jest.Mock).mockRejectedValue(error);
@@ -74,6 +74,5 @@ describe('fetchNews', () => {
     expect(consoleSpy).toHaveBeenCalledWith('Error fetching news:', error);
 
     consoleSpy.mockRestore();
-    });
-
+  });
 });

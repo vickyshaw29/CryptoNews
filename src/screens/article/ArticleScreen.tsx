@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { useNewsStore } from '../store/newsStore';
-import { RootStackParamList } from '../navigation/AppNavigator';
+import { useNewsStore } from '../../store/newsStore';
+import { RootStackParamList } from '../../navigation/AppNavigator';
 
 type ArticleRouteProp = RouteProp<RootStackParamList, 'Article'>;
 

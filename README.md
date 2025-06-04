@@ -112,6 +112,7 @@ This is one way to run your app — you can also build it directly from Android 
 ```bash
 CryptoNewsApp/
 ├── api/               # API client setup and functions
+├── assets/            # assets
 ├── components/        # Reusable UI components
 ├── navigation/        # Navigation and deep linking setup
 ├── screens/           # Screen-level components (NewsFeed, Article)
@@ -121,3 +122,26 @@ CryptoNewsApp/
 ├── App.tsx
 ├── ...
 ```
+
+### 🚨 Limitations
+🔹 Local Notifications in Background Mode (Simulator Limitation)
+Due to platform limitations, full background behavior—such as receiving push notifications when the app is terminated or fully backgrounded—is not supported on iOS simulators and only partially supported on Android emulators.
+
+#### iOS Simulator:
+- Does not support background tasks like background fetch or silent push notifications, so notifications triggered in the background or when terminated will not be delivered or displayed.
+- Testing real background notifications requires a physical device.
+
+### Android Emulator:
+- May not accurately simulate background execution, resulting in inconsistent notification delivery.
+- Background execution policies vary by Android version and device manufacturer, affecting reliability
+
+### Assignment-Specific Implementation
+
+For the purpose of this assignment, a simulation is implemented using a timer in development mode (DEV) that mimics background notification behavior.
+
+This simulation works on both iOS and Android simulators when the app is in the background or foreground (but not when terminated).
+
+On real physical devices, this can be extended using background fetch or headless tasks for true background notifications.
+
+This approach ensures the feature behaves as expected during evaluation while acknowledging simulator limitations.
+

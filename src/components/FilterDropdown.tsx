@@ -70,8 +70,9 @@ export const FilterDropdown = ({
       </TouchableOpacity>
 
       <Modal visible={visible} transparent animationType="none">
-        <Pressable style={styles.backdrop} onPress={hideModal}>
+        <Pressable testID="backdrop"  style={styles.backdrop} onPress={hideModal}>
           <Animated.View
+            testID="modalContent"
             style={[
               styles.modalCard,
               {backgroundColor:theme.colors.background},
