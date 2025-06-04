@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const getStyles = (isDark: boolean) =>
   StyleSheet.create({
@@ -34,7 +34,7 @@ export const getStyles = (isDark: boolean) =>
       marginBottom: 12,
       shadowColor: '#000000',
       shadowOpacity: 0.05,
-      shadowOffset: { width: 0, height: 2 },
+      shadowOffset: {width: 0, height: 2},
       shadowRadius: 4,
       alignItems: 'stretch',
     },
@@ -42,6 +42,15 @@ export const getStyles = (isDark: boolean) =>
       width: 100,
       height: '100%',
       resizeMode: 'cover',
+      borderRightWidth: 3,
+      borderRightColor: '#007aff', // iOS blue
+    },
+    placeholder: {
+      // width: 100,
+      height: '100%',
+      backgroundColor: '#e0e0e0',
+      borderRightWidth: 3,
+      borderRightColor: '#007aff',
     },
     thumbnailPlaceholder: {
       width: 100,

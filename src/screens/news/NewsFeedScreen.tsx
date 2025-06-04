@@ -150,10 +150,7 @@ export default function NewsFeed() {
     {item.thumbnail ? (
       <Image source={{uri: item.thumbnail}} style={styles.thumbnail} />
       ) : (
-      <Image
-        source={require('../../assets/NoImg.png')}
-        style={styles.thumbnail}
-      />
+      <View style={styles.placeholder} />
     )}
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={3}>
