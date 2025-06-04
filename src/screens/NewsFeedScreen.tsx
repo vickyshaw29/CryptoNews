@@ -16,7 +16,6 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParams} from '../navigation/RootStackParams';
 import {checkIsConnected} from '../utils/network';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NetInfo from '@react-native-community/netinfo';
 import {FilterBar} from '../components/FilterBar';
 import PushNotification from 'react-native-push-notification';
 import { useThemeStore } from '../theme/themeStore';
@@ -58,6 +57,8 @@ export default function NewsFeed() {
       title: 'New Article',
       message: article.title,
     });
+
+
   };
 
   const loadNews = useCallback(async () => {
@@ -90,7 +91,7 @@ export default function NewsFeed() {
             lastFetchedArticleId.current = parsed[0].id;
           }
           setArticles(parsed);
-          setError('You are offline. Showing cached news.');
+          setError(null);
         } else {
           setError('You are offline and no cached news is available.');
         }
@@ -106,13 +107,6 @@ export default function NewsFeed() {
     loadNews();
   }, [loadNews, filters]);
 
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setIsOffline(!state.isConnected);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const renderItem = ({item}: {item: Article}) => (
     <TouchableOpacity
@@ -158,9 +152,7 @@ export default function NewsFeed() {
         </View>
       )}
 
-      {error && <Text style={styles.error}>{error}</Text>}
-
-      {!loading && !error && (
+      {!loading && articles.length > 0 && (
         <FlatList
           data={articles}
           keyExtractor={item => item.id}
@@ -175,6 +167,10 @@ export default function NewsFeed() {
             <Text style={styles.emptyText}>No news available.</Text>
           }
         />
+      )}
+
+      {!loading && articles.length === 0 && error && (
+        <Text style={styles.error}>{error}</Text>
       )}
     </View>
   );

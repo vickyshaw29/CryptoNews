@@ -82,11 +82,10 @@ export const FilterDropdown = ({
             ]}
           >
             <FlatList
-              data={options.filter((opt) => opt.trim() !== '')}
-              keyExtractor={(item) => item}
+              data={options}  // <-- Changed here: removed filter so all options appear including empty or blank strings
+              keyExtractor={(item, index) => item + index}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
-                console.log({item})
                 const isSelected = item === selected;
                 return (
                   <TouchableOpacity
@@ -103,7 +102,7 @@ export const FilterDropdown = ({
                         {color:theme.colors.text},
                       ]}
                     >
-                      {item.toUpperCase()}
+                      {item ? item.toUpperCase() : 'ALL'}
                     </Text>
                   </TouchableOpacity>
                 );
