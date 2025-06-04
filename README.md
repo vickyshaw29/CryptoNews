@@ -1,6 +1,5 @@
 # CryptoNewsApp
 
-🔗 **Live Demo:** [https://structura-two.vercel.app](https://structura-two.vercel.app)
 
 **CryptoNewsApp** This is a React Native project for fetching and displaying crypto-related news, bootstrapped using @react-native-community/cli.
 A cross-platform (iOS & Android) mobile application that demonstrates capabilities in API integration, state management, offline caching, native module integration, and modern UI/UX patterns.
