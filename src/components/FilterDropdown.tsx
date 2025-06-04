@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   Modal,
   FlatList,
-  StyleSheet,
   Pressable,
   Animated,
   Easing,
 } from 'react-native';
 import { useThemeStore } from '../theme/themeStore';
+import { styles } from './FilterDropdown.styles';
 
 interface FilterDropdownProps {
   label: string;
@@ -66,7 +66,7 @@ export const FilterDropdown = ({
     <View style={styles.wrapper}>
       <TouchableOpacity style={[styles.button, {backgroundColor:theme.colors.background}]} onPress={showModal}>
         <Text style={[styles.label, {color:theme.colors.text}]}>{label}</Text>
-        <Text style={styles.value}>{selected ? selected.toUpperCase() : 'All'}</Text>
+        <Text style={[styles.value, {color:theme.colors.text}]}>{selected ? selected.toUpperCase() : 'All'}</Text>
       </TouchableOpacity>
 
       <Modal visible={visible} transparent animationType="none">
@@ -82,11 +82,10 @@ export const FilterDropdown = ({
             ]}
           >
             <FlatList
-              data={options.filter((opt) => opt.trim() !== '')}
-              keyExtractor={(item) => item}
+              data={options}
+              keyExtractor={(item, index) => item + index}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
-                console.log({item})
                 const isSelected = item === selected;
                 return (
                   <TouchableOpacity
@@ -100,10 +99,10 @@ export const FilterDropdown = ({
                       style={[
                         styles.optionText,
                         isSelected && styles.optionTextSelected,
-                        {color:theme.colors.text},
+                        {color:!isSelected ? theme.colors.text : 'black'},
                       ]}
                     >
-                      {item.toUpperCase()}
+                      {item ? item.toUpperCase() : 'ALL'}
                     </Text>
                   </TouchableOpacity>
                 );
@@ -115,59 +114,3 @@ export const FilterDropdown = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    marginHorizontal: 8,
-  },
-  button: {
-    backgroundColor: '#f4f4f5',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-  label: {
-    color: '#6b7280',
-    fontSize: 14,
-  },
-  value: {
-    color: '#111827',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.25)',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  modalCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    maxHeight: '60%',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 12,
-    elevation: 10,
-  },
-  option: {
-    paddingVertical: 12,
-    paddingHorizontal: 6,
-    borderRadius: 10,
-  },
-  selectedOption: {
-    backgroundColor: '#e0f2fe',
-  },
-  optionText: {
-    fontSize: 16,
-    color: '#111827',
-  },
-  optionTextSelected: {
-    fontWeight: 'bold',
-    color: '#2563eb',
-  },
-});

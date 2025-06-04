@@ -41,5 +41,5 @@ export const useThemeStore = create<ThemeStore>((set, get) => ({
         themeName: resolved,
         theme: resolved === 'light' ? lightTheme : darkTheme,
     });
-    }
+    },
 }));

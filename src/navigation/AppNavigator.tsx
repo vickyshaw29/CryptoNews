@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import NewsFeedScreen from '../screens/NewsFeedScreen';
 import ArticleScreen from '../screens/ArticleScreen';
 import SettingsModal from '../components/SettingsModal';
 import { useThemeStore } from '../theme/themeStore';
+import { GearIcon } from '../components/GearIcon';
+
 
 const linking = {
   prefixes: ['cryptonews://'],
@@ -32,13 +34,17 @@ export default function AppNavigator() {
     initTheme();
   }, [initTheme]);
 
-  const headerRight = () => (
-    <TouchableOpacity style={styles.headerButton} onPress={() => setModalVisible(true)}>
-      <Text style={[styles.headerButtonText, themeName === 'dark' ? styles.darkText : styles.lightText]}>
-        Settings
-      </Text>
-    </TouchableOpacity>
-  );
+const headerRight = () => (
+ <TouchableOpacity
+    style={[styles.headerButton]}
+    onPress={() => setModalVisible(true)}
+    activeOpacity={0.7}
+    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+  >
+    <GearIcon color={themeName === 'dark' ? 'white' : 'black'} size={20} />
+  </TouchableOpacity>
+);
+
 
   return (
     <>
@@ -60,7 +66,7 @@ export default function AppNavigator() {
 
 const styles = StyleSheet.create({
   headerButton: {
-    marginRight: 15,
+    marginRight: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -72,5 +78,11 @@ const styles = StyleSheet.create({
   },
   lightText: {
     color: 'black',
+  },
+ darkButton: {
+    backgroundColor: '#444',  // Dark gray background on dark mode
+  },
+  lightButton: {
+    backgroundColor: '#eee',  // Light gray background on light mode
   },
 });
