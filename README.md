@@ -1,7 +1,9 @@
 # CryptoNewsApp
 
-![Simulator Screenshot - iPhone 15 Pro Max - 2025-06-04 at 21 02 58](https://github.com/user-attachments/assets/0a9b3d5b-1019-4274-a15f-39bfe92174e5)
-![Screenshot_1749051203](https://github.com/user-attachments/assets/fe8415c5-228f-463b-a2b2-37f1128ef8fc)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0a9b3d5b-1019-4274-a15f-39bfe92174e5" alt="iOS Screenshot" width="200"/>
+  <img src="https://github.com/user-attachments/assets/fe8415c5-228f-463b-a2b2-37f1128ef8fc" alt="Android Screenshot" width="200"/>
+</p>
 
 
 
